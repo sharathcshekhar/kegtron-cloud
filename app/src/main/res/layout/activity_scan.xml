@@ -1,0 +1,113 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <EditText
+        android:id="@+id/editTextSyncInterval"
+        android:layout_width="76dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="44dp"
+        android:ems="10"
+        android:hint="@string/default_sync_interval"
+        android:text="@string/default_sync_interval"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:autofillHints="" />
+
+    <TextView
+        android:id="@+id/textViewSyncInterval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/sync_interval_label"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextSyncInterval" />
+
+    <EditText
+        android:id="@+id/editTextWebUrl"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="32dp"
+        android:autofillHints=""
+        android:hint="@string/webhook_hint"
+        android:inputType="textUri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSyncInterval" />
+
+    <TextView
+        android:id="@+id/textViewWebUrl"
+        android:layout_width="94dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/webhook_url"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextWebUrl" />
+
+    <EditText
+        android:id="@+id/editTextAccessKey"
+        android:layout_width="256dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="64dp"
+        android:autofillHints=""
+        android:hint="@string/access_keys_label"
+        android:inputType="textUri"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextWebUrl" />
+
+    <TextView
+        android:id="@+id/textViewAccessKey"
+        android:layout_width="94dp"
+        android:layout_height="17dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/access_keys_hint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextAccessKey" />
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="325dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="64dp"
+        android:gravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAccessKey" />
+
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="185dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="16dp"
+        android:onClick="onStartClick"
+        android:text="@string/start_syncing_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStatus" />
+
+    <Button
+        android:id="@+id/buttonStop"
+        android:layout_width="185dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="onStopClick"
+        android:text="@string/stop_syncing_label"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonStart"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonStart"
+        app:layout_constraintTop_toTopOf="@+id/buttonStart" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

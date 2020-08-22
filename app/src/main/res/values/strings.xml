@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Phalamrutha-Kegtron</string>
+    <string name="ble_not_supported">BLE not supported on this device</string>
+    <string name="bt_unavailable">Bluetooth unavailable</string>
+    <string name="bt_disabled">Bluetooth disabled, turn on and restart</string>
+    <string name="sync_frequency_label">Sync Frequency (mins)</string>
+    <string name="default_sync_time">15</string>
+    <string name="webhook_label">WebHook</string>
+    <string name="webhook_hint">http://webhook.com/</string>
+    <string name="start_sync">Start Sync</string>
+    <string name="default_sync_interval">15</string>
+    <string name="sync_interval_label">Sync interval (mins)</string>
+    <string name="webhook_url">Webhook URL</string>
+    <string name="start_syncing_label">Start Syncing</string>
+    <string name="stop_syncing_label">Stop Syncing</string>
+    <string name="access_keys_label">Access Keys</string>
+    <string name="access_keys_hint">Access Keys</string>
+    <string name="preference_file_key">device_settings</string>
+    <string name="status_not_initialized">Status: Not Initialized</string>
+</resources>
