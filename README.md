@@ -1,6 +1,6 @@
 # kegtron-cloud
 
-This is an add-on app for Kegtron beer flow meter: https://kegtron.com/gen1/. I am just a homebrewer who uses Kegtron, and I am in no way associated 
+This is an add-on app for Kegtron beer flow meter: https://kegtron.com/gen1/. I am a homebrewer who uses Kegtron, and I am in no way associated 
 with the Kegtron company. So this is just an unofficial companion app to the official app.
 
 Kegtron is a flow meter with Bluetooth which can be installed on to a beer keezer/kegerator to monitor the amount of beer in your kegs.
