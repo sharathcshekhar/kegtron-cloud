@@ -4,6 +4,7 @@
     android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#4BEFEBCB"
     tools:context=".MainActivity">
 
     <EditText
@@ -11,14 +12,14 @@
         android:layout_width="76dp"
         android:layout_height="59dp"
         android:layout_marginTop="44dp"
+        android:autofillHints=""
         android:ems="10"
         android:hint="@string/default_sync_interval"
-        android:text="@string/default_sync_interval"
         android:inputType="number"
+        android:text="@string/default_sync_interval"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textViewSyncInterval"
@@ -80,6 +81,7 @@
         android:layout_width="325dp"
         android:layout_height="60dp"
         android:layout_marginTop="64dp"
+        android:background="#F4F4F4"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,19 +89,19 @@
 
     <Button
         android:id="@+id/buttonStart"
-        android:layout_width="185dp"
-        android:layout_height="55dp"
+        android:layout_width="184dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:onClick="onStartClick"
         android:text="@string/start_syncing_label"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewStatus" />
 
     <Button
         android:id="@+id/buttonStop"
-        android:layout_width="185dp"
-        android:layout_height="55dp"
+        android:layout_width="184dp"
+        android:layout_height="56dp"
         android:layout_marginEnd="16dp"
         android:onClick="onStopClick"
         android:text="@string/stop_syncing_label"
@@ -108,6 +110,16 @@
         app:layout_constraintStart_toEndOf="@+id/buttonStart"
         app:layout_constraintTop_toTopOf="@+id/buttonStart" />
 
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="184dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="32dp"
+        android:onClick="onSaveClick"
+        android:text="@string/save_label"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

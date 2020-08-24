@@ -166,16 +166,7 @@ public class MainActivity extends Activity {
     }
 
     public void onStartClick(View v) {
-        EditText etSync = findViewById(R.id.editTextSyncInterval);
-        EditText etUrl = findViewById(R.id.editTextWebUrl);
-        EditText etAccessKey = findViewById(R.id.editTextAccessKey);
-
-        int syncInterval = Integer.parseInt(etSync.getText().toString());
-        mSettingsHelper.setSyncFrequency(syncInterval);
-
-        mSettingsHelper.setAppUrl(etUrl.getText().toString());
-        mSettingsHelper.setAppAccessKey(etAccessKey.getText().toString());
-
+        save();
         startSyncServiceWithPermissionCheck();
     }
 
@@ -190,4 +181,21 @@ public class MainActivity extends Activity {
         intent.putExtra("requestCode", SyncService.STOP_SCAN_REQ_CODE);
         sendBroadcast(intent);
     }
+
+    public void onSaveClick(View v) {
+        save();
+    }
+
+    private void save() {
+        EditText etSync = findViewById(R.id.editTextSyncInterval);
+        EditText etUrl = findViewById(R.id.editTextWebUrl);
+        EditText etAccessKey = findViewById(R.id.editTextAccessKey);
+
+        int syncInterval = Integer.parseInt(etSync.getText().toString());
+
+        mSettingsHelper.setSyncFrequency(syncInterval);
+        mSettingsHelper.setAppUrl(etUrl.getText().toString());
+        mSettingsHelper.setAppAccessKey(etAccessKey.getText().toString());
+    }
 }
+

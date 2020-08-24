@@ -71,7 +71,7 @@ public class GSheetsHelper {
                     }
                 };
 
-        RetryPolicy retryPolicy = new DefaultRetryPolicy(SOCKET_TIMEOUT, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        RetryPolicy retryPolicy = new DefaultRetryPolicy(SOCKET_TIMEOUT, 5, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         stringRequest.setRetryPolicy(retryPolicy);
 
         RequestQueue queue = Volley.newRequestQueue(mContext);

@@ -31,12 +31,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.ParseError;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class SyncService extends BroadcastReceiver {
 
@@ -99,6 +106,19 @@ public class SyncService extends BroadcastReceiver {
         registerAlarm();
     }
 
+    private void cancelAlarm() {
+        Intent intent = new Intent(mContext, this.getClass());
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, PERIODIC_SCAN_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
+
+        if (alarmManager == null) {
+            Log.e(TAG, "Failed to get AlarmManager");
+        } else {
+            Log.i(TAG, "Cancelling previous alarms.");
+            alarmManager.cancel(pendingIntent);
+        }
+    }
+
     private void registerAlarm() {
         Intent intent = new Intent(mContext, this.getClass());
         PendingIntent pendingIntent = PendingIntent.getBroadcast(mContext, PERIODIC_SCAN_REQ_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -106,14 +126,14 @@ public class SyncService extends BroadcastReceiver {
 
         int syncInterval = mAppSettings.getSyncFrequency();
 
-        long targetTimeInMillis = System.currentTimeMillis() + syncInterval * 60 * 1000;
+        long targetTimeInMillis = System.currentTimeMillis() +  TimeUnit.MINUTES.toMillis(syncInterval);
 
         if (alarmManager == null) {
             Log.e(TAG, "Failed to register alarm.");
-            return;
+        } else {
+            Log.i(TAG, "Registering alarm at " + getTimeFromTs(targetTimeInMillis));
+            alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, targetTimeInMillis, pendingIntent);
         }
-        Log.i(TAG, "Registering alarm at " + getTimeFromTs(targetTimeInMillis));
-        alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, targetTimeInMillis, pendingIntent);
     }
 
     private String getTimeFromTs(long timestamp) {
@@ -147,7 +167,7 @@ public class SyncService extends BroadcastReceiver {
             }
 
             if (result.getScanRecord() == null) {
-                mAppSettings.setLastSyncStatus("No Scan data " + mDateFormatter.format(new Date()));
+                mAppSettings.setLastSyncStatus("Null Scan data " + mDateFormatter.format(new Date()));
                 Log.e(TAG, "Can't get scan Record. Null.");
                 return;
             }
@@ -183,12 +203,31 @@ public class SyncService extends BroadcastReceiver {
             Log.i(TAG, stats.toString());
 
             gSheetsHelper.addItemToSheet(stats, response -> {
-                        Log.i(TAG, "Upload Success. Response:" + response);
-                        mAppSettings.setLastSyncStatus("Upload Success at " +  mDateFormatter.format(new Date()));
+                        Log.i(TAG, "Upload Success. Response: " + response);
+                        mAppSettings.setLastSyncStatus("Upload Success " +  mDateFormatter.format(new Date()));
                     },
                     error -> {
-                        Log.e(TAG, "Upload Error:" + error);
-                        mAppSettings.setLastSyncStatus("Upload Failed at " + mDateFormatter.format(new Date()));
+                        String dt = mDateFormatter.format(new Date());
+                        int err = error.networkResponse.statusCode;
+                        if (error instanceof AuthFailureError) {
+                            Log.e(TAG, "AuthFailureError on upload with status code: " +  err);
+                            mAppSettings.setLastSyncStatus("Upload AuthError (" + err + ") " + dt);
+                        } else if (error instanceof NetworkError) {
+                            Log.e(TAG, "NetworkError on upload with status code: " + err);
+                            mAppSettings.setLastSyncStatus("Upload NetworkError (" + err + ") " + dt);
+                        } else if (error instanceof ParseError){
+                            Log.e(TAG, "ParseError on upload with status code: " + err);
+                            mAppSettings.setLastSyncStatus("Upload ParseError (" + err + ") " + dt);
+                        } else  if (error instanceof ServerError) {
+                            Log.e(TAG, "ServerError on upload with status code: " + err);
+                            mAppSettings.setLastSyncStatus("Upload AuthError (" + err + ") " + dt);
+                        } else if (error instanceof TimeoutError) {
+                            Log.e(TAG, "TimeoutError on upload with status code: " + err);
+                            mAppSettings.setLastSyncStatus("Upload TimeoutError (" + err + ") " + dt);
+                        } else {
+                            Log.e(TAG, "Unknown Error on upload with status code: " + err);
+                            mAppSettings.setLastSyncStatus("Upload Error (" + err + ") " + dt);
+                        }
                     }
             );
         }
@@ -196,14 +235,15 @@ public class SyncService extends BroadcastReceiver {
         @Override
         public void onBatchScanResults(List<ScanResult> results) {
             super.onBatchScanResults(results);
-            Log.i(TAG, "Batch results");
+            Log.e(TAG, "Unexpected Batch results");
+            mAppSettings.setLastSyncStatus("Unhandled Batch results "  +  mDateFormatter.format(new Date()));
         }
 
         @Override
         public void onScanFailed(int errorCode) {
             super.onScanFailed(errorCode);
             Log.e(TAG, "Error in scanning " + errorCode);
-            mAppSettings.setLastSyncStatus("Scan Failed at " +  mDateFormatter.format(new Date()));
+            mAppSettings.setLastSyncStatus("Scan Failed (" + errorCode + ") " +  mDateFormatter.format(new Date()));
         }
     };
 
@@ -227,7 +267,7 @@ public class SyncService extends BroadcastReceiver {
     }
 
     private void scanAllLeDevice() {
-        Log.i(TAG, "Starting first scan.");
+        Log.i(TAG, "Starting first scan..");
         BluetoothLeScanner bluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         bluetoothLeScanner.startScan(mLeScanCallback);
     }
