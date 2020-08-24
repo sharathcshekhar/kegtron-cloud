@@ -24,14 +24,48 @@ In the rest of this document, I will describe on how to install and use this And
 https://github.com/sharathcshekhar/homebrew-taplist/
 
 # Basic Usage
+I originally wrote this app for a 2-port Kegtron device (which is the only device I have tested this app with). Later, I added some extensions to the code to 
+support even a 1-port device. Since this is not tested, please play around and make any changes as required. If you are using more than one Kegtron device,
+I don't know how it behaves. Feel free to add extensions to support this use case.
+
+I have tested this app on Pixel 4 XL running Android Q. If you are running a different version/brand you have to figure out on your own to get the app working.
+
+## Installing 
+If you are familiar with Android build process, you can clone the repo and build your own apk. If you are not familiar, you can isntall Android Studio which comes
+with all the build tools. 
+If you are impatient, you can grab the latest apk here: https://github.com/sharathcshekhar/kegtron-cloud/raw/master/releases/app-release-unsigned.apk
+To install this, you may still want to to install adb, enable developer option on your Android phone, and connect phone over USB with debug mode enabled. There
+are a few other options for installation - I have not tried this, but you may find it useful - https://www.lifewire.com/install-apk-on-android-4177185.
+
+## Starting the App
+1. Start the app with Kegtron within the bluetooth range. You have to enter the following parameters into the app:
+    1. WebApp URL
+    2. WebApp write access key
+    3. Sync Freqency in minutes.
+2. After this, you can press "Start Syncing" button. 
+3. Grant the permissions asked. BLE scans in background requires "Fine location access" with "always on" not just "when app is in use". 
+4. The first sync happens immediately. There is a small status window in UI which displays a status of the previous sync.
+5. To refresh the status, switch to a different app and switch back. If all is well, you should see "Upload Sucess" in your status window.
+6. You can update any of these parameters at anytime by entering new parameters, and clicking "Save". The new values will be taken on the next scheduled scan.
+7. If you want the updated parameters (e.g., sync frequency) to be reflected immediately, you will have to once again press "Start Syncing".
+8. You can stop syncing at anytime with the "Stop syncing" button.
+
+### Example usage
+You can start the app with a low frequency of say once every 6 hours (360 minutes). Just before a party you're planning you can update the sync frequency to once 
+every 15 mins. If you have a phone that's always plugged in, you can use a frequency as high you want.
+
+## Working
+1. The name of your device will be something like this: "Kegtron 12345" where 12345 is probably a unique ID. 
+2. On the first scan, the app does not know the exact name your device nor its MAC. So it scans for all available devices and looks for a device whose self-
+described name starts with "kegtron". Once it finds a match, it records the name and later periodic scans will be faster as the app now knows the exact name, and 
+matches it during scans.
 
 # Caveats
 Before installing this app, you should be aware of some caveats: 
-1. Any app that requires periodic sync needs to run in the backgroud. I use a Android's alarm manager to schedue periodic sync. This comes with some caveats:
-Android is not very favourable to apps running background and provides no guarentees. This means, sync may fail occonsionally due to BLE scan errors or fail to
-upload data due to network errors. 
-2. Android may decide not to schedule the sync at all. This is more likely to happen if the device enters doze mode.
-3. This app is not a fully polished app. So you may observe battery drain or other stability issues. I run this on a dedicate phone instead of my everyday phone. 
+1. Any app that requires periodic sync needs to run in the backgroud. I use a Android's alarm manager to schedue periodic sync. This comes with some problems:
+Android is not very favourable to apps running background and provides no guarentees of scheduling tasks. This means, sync may fail occonsionally due to BLE scan errors or fail to upload data due to network errors. 
+2. Android may decide not to schedule the sync at all. This is more likely to happen if the device enters doze mode. If you notice this, open the app and close it. That brings the app to active state and Android is more likely to resume syncing.
+3. This app is not a fully polished app. So you may observe battery drain or other stability issues. I run this on a dedicated phone instead of my everyday phone. 
 If you have a spare old phone lying aroud, you can do the same.
 4. I have not tested this app on anything other my phone and my Kegtron. So if it fails to work because of compatibility, feel free to change the code. If you
 this you changes are useful for others, pleas send me a pull-request, I will be happy to aceept any enhancements.
