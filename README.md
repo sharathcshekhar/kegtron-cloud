@@ -40,9 +40,9 @@ are a few other options for installation - I have not tried this, but you may fi
 
 ## Starting App
 1. Start the app with Kegtron within the bluetooth range. You have to enter the following parameters into the app:
-    1. WebApp URL
-    2. WebApp write access key
-    3. Sync Frequency in minutes.
+    1. WebApp URL
+    2. WebApp write access key
+    3. Sync Frequency in minutes.
 2. After this, you can press the "Start Syncing" button. 
 3. Grant the permissions asked. BLE scans in background requires "Fine location access" with "always on" not just "when app is in use". 
 4. The first sync happens immediately. There is a small status window in the UI which displays a status of the previous sync.
